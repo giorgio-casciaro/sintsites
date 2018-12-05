@@ -1,0 +1,31 @@
+version: '3.3'
+
+services:
+  schema:
+    image: giorgiocasciaro/civil-microservices-schema:1
+   #  entrypoint: sh -c "cd /service/ && npm run watch_test_remote"
+    command: sh -c "cd /service/ && npm start"
+    # ports:
+    #   - "10000:10000"
+    ports:
+     - 10000:10000
+    deploy:
+     # placement:
+     #   constraints: [node.role == manager]
+    #  mode: global
+     replicas: 3
+    environment:
+      netHost: 0.0.0.0
+      netHostPort: 10000
+      aerospikeHosts: aerospike:3000
+      NODE_ENV: production
+    networks:
+      - microservicesNet
+      - aerospike
+
+
+networks:
+  microservicesNet:
+    driver: overlay
+  aerospike:
+    driver: overlay

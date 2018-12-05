@@ -1,0 +1,31 @@
+version:              '3.3'
+
+services:
+  schema:
+    image:            giorgiocasciaro/civil-microservices-schema:6
+    command:          sh -c "sleep 10 && npm run test && npm run start"
+    environment:
+      netHost:        schema
+      netHostPort:    10000
+      aerospikeHosts: aerospike:3000
+      NODE_ENV:       development
+    volumes:
+       - ../../schema/service:/microservice/service
+       - ../../schema/package.json:/microservice/package.json
+       - ../../../../civil_microservices_shared_modules/:/microservice/node_modules
+       - ../../../NPM/jesus:/microservice/node_modules/sint-bit-jesus
+       - ../../../NPM/cqrs:/microservice/node_modules/sint-bit-cqrs
+       - ../../../FS/:/uploads/
+    depends_on:
+      - aerospike
+    ports:
+      - 10000:10000
+    networks:
+      - microservicesNet
+      - aerospike
+
+networks:
+  microservicesNet:
+    driver:           bridge
+  aerospike:
+    driver:           bridge

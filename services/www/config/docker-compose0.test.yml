@@ -1,0 +1,77 @@
+version:            '3.3'
+
+services:
+   www:
+     image:         giorgiocasciaro/civil-microservices-www:21
+     entrypoint:    sh -c "echo "$$NGINX_CONF" > /etc/nginx/nginx.conf ;  nginx -g 'daemon off;' "
+     environment:
+       NGINX_CONF:  |-
+          events {
+              worker_connections  1024;
+          }
+          http {
+            client_max_body_size 500M;
+            include       /etc/nginx/mime.types;
+            default_type  application/octet-stream;
+            resolver 127.0.0.11;
+            server {
+                listen 443;
+                ssl on;
+                ssl_certificate /microservice/certs/cacert.pem;
+                ssl_certificate_key /microservice/certs/privkey.pem;
+
+                proxy_set_header Host $$http_host;
+                proxy_set_header X-Real-IP $$remote_addr;
+                proxy_set_header X-Forwarded-For $$proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $$scheme;
+
+                location ~ /api/([-_a-zA-z0-9]*)/(.*) {
+                  proxy_pass http://$$1:10080/$$2 ;
+                }
+                location ~ /api_static/([-_a-zA-z0-9]*)/(.*) {
+                  proxy_pass http://$$1:10070/$$2 ;
+                }
+                location ~ /mapserver/(.*) {
+                  proxy_pass http://mapserver:80/$$1 ;
+                }
+                location ~ /styles/(.*) {
+                  proxy_pass http://mapserver:80/styles/$$1 ;
+                }
+                location ~ /fonts/(.*) {
+                  proxy_pass http://mapserver:80/fonts/$$1 ;
+                }
+                location ~ /data/(.*) {
+                  proxy_pass http://mapserver:80/data/$$1 ;
+                }
+                location ~ /mapbox(.*) {
+                  proxy_pass http://mapserver:80/mapbox$$1 ;
+                }
+                location / {
+                    root /microservice/service;
+                }
+            }
+          }
+     networks:
+       - microservices_net
+     ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+      - target: 443
+        published: 443
+        protocol: tcp
+        mode: host
+    #  ports:
+    #   - 81:81
+    #   docker service update --publish-add published=81,target=81,mode=host --detach=false civil-microservices_www
+
+     deploy:
+       endpoint_mode: dnsrr
+       # placement:
+       #   constraints: [node.role == manager]
+       mode:        global
+
+networks:
+  microservices_net:
+    driver:         overlay

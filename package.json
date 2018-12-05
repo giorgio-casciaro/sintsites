@@ -1,0 +1,16 @@
+{
+  "name": "sintsites",
+  "version": "0.0.1",
+  "description": "sintsites microservices",
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/giorgio-casciaro/sintsites.git"
+  },
+  "scripts": {},
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {
+    "moment": "^2.18.1"
+  }
+}

@@ -1,0 +1,60 @@
+version:              '3.3'
+
+services:
+  mapserver:
+    image:            giorgiocasciaro/civil-microservices-map:1
+    entrypoint: bash -c "echo \"$$MS_CONF\" > /config.json ; ls /microservice/data ; /usr/src/app/run.sh -c /config.json --verbose"
+    environment:
+       MS_CONF: |-
+         {
+           "options": {
+             "paths": {
+               "root": "/usr/src/app/node_modules/tileserver-gl-styles",
+               "fonts": "fonts",
+               "styles": "styles",
+               "mbtiles": "/microservice/data"
+             },
+            "domains": [
+              "localhost"
+            ],
+            "formatQuality": {
+              "jpeg": 80,
+              "webp": 90,
+              "pngQuantization": false,
+              "png": 90
+            },
+            "maxScaleFactor": 3,
+            "maxSize": 2048,
+            "pbfAlias": "pbf",
+            "serveAllFonts": true,
+            "serveStaticMaps": true
+           },
+           "styles": {
+             "klokantech-basic": {
+               "style": "klokantech-basic/style.json",
+               "tilejson": {
+               }
+             },
+             "osm-bright": {
+               "style": "osm-bright/style.json",
+               "tilejson": {
+               }
+             }
+           },
+           "data": {
+             "v3": {
+               "mbtiles": "italy.mbtiles"
+             }
+           }
+         }
+
+    ports:
+      - 90:80
+    networks:
+      - microservicesNet
+    # volumes:
+    #    - ../../mapserver:/microservice
+
+networks:
+  microservicesNet:
+    driver:           bridge

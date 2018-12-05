@@ -1,0 +1,3 @@
+benvenuto in civil connected
+questo il tuo codice di attivazione
+${JSON.stringify(data.data.view.emailConfirmationCode)}

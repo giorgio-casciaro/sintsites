@@ -1,0 +1,57 @@
+version:                  '3.3'
+
+services:
+   users:
+     image:               giorgiocasciaro/ubuntu-node-10:0.0.1
+    #  logging:
+    #    driver:          none
+     working_dir:         /microservice
+     command:             sh -c "npm run watch_start"
+     environment:
+       # debugJesus:      1
+       # debugCouchbase:    1
+       # debugSchema:       1
+       # debugMain:         1
+       uploadPath:        /uploads/
+       serviceName:       users
+       netHost:           users
+       couchbaseHosts:    51.15.224.160:8091
+       couchbaseUser:     Administrator
+       couchbasePassword: Vopakz_331
+       netCors:           http://localhost:82,http://127.0.0.1:82,http://localhost:8080,http://127.0.0.1:8080,http://localhost:10080,http://127.0.0.1:10080
+       NODE_ENV:          development
+       sendEmails:        'true'
+       smtpConfigJson: '{ "host": "fakesmtp", "from": "info@civilconnect.it", "port": 1025, "secure": false }'
+     volumes:
+       - /var/run/docker.sock:/var/run/docker.sock
+       - ../../users:/microservice
+       # - ../../../../civil_microservices_shared_modules/:/microservice/node_modules
+       - ../../../NPM/jesus:/microservice/node_modules/sint-bit-jesus
+       - ../../../NPM/cqrs:/microservice/node_modules/sint-bit-cqrs
+       - ../../../NPM/sint-bit-utils:/microservice/node_modules/sint-bit-utils
+       - ../../../FS/:/uploads/
+
+     deploy:
+       resources:
+        limits:
+          cpus:           '0.50'
+          memory:         100M
+        reservations:
+          cpus:           '0.20'
+          memory:         50M
+       endpoint_mode:   dnsrr
+       # placement:
+       #   constraints:   [node.role == manager]
+      #  mode:            global
+       replicas:          1
+
+     networks:
+       - microservices_net
+
+networks:
+  microservices_net:
+    driver:               overlay
+    ipam:
+      driver:             default
+      config:
+        - subnet:         10.100.0.0/24

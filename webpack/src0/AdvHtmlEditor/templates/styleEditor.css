@@ -1,0 +1,25 @@
+.AdvHtmlEditorStyleEditor{}
+.AdvHtmlEditorStyleEditor .elementStyle {}
+.AdvHtmlEditorStyleEditor .elementStyle .elementStyleName{}
+.AdvHtmlEditorStyleEditor .elementStyle .elementStyleDescription{}
+.AdvHtmlEditorStyleEditor .elementStyle .elementStyleName{}
+.AdvHtmlEditorStyleEditor .elementStyle .elementStatesStyles{}
+.AdvHtmlEditorStyleEditor .elementStyle .elementStatesStyles .styleStateEditor{}
+.AdvHtmlEditorStyleEditor .elementStyle .elementStatesStyles .styleStateEditor .styleStateProp{}
+.AdvHtmlEditorStyleEditor .elementStyle .elementStatesStyles .styleStateEditor .styleStateProp .styleStatePropName{}
+.AdvHtmlEditorStyleEditor .elementStyle .elementStatesStyles .styleStateEditor .styleStateProp .styleStatePropDescription{}
+.AdvHtmlEditorStyleEditor .elementStyle .elementStatesStyles .styleStateEditor .styleStateProp .styleState{}
+.AdvHtmlEditorStyleEditor .elementStyle .elementStatesStyles .styleStateEditor .styleStateProp .styleState .styleStatePropClass {}
+.AdvHtmlEditorStyleEditor .elementStyle .elementStatesStyles .styleStateEditor .styleStateProp .styleState .styleStatePropClass .styleStatePropClassName{}
+.AdvHtmlEditorStyleEditor .elementStyle .elementStatesStyles .styleStateEditor .styleStateProp .styleState .styleStatePropClass .styleStatePropClassDescription{}
+.AdvHtmlEditorStyleEditor .elementStyle .elementStatesStyles .styleStateEditor .styleStateProp .styleState .styleStatePropClass .styleStatePropClassBody{}
+
+.AdvHtmlEditorStyleEditor .styleState{ display: flex; }
+.AdvHtmlEditorStyleEditor .styleStatePropClassBody>div{zoom:0.50;background: #666; width: 100px; height:  100px; position: relative; padding: 10px}
+.AdvHtmlEditorStyleEditor .styleStatePropClassBody>div>div{background: #ccc; width: 50px; height:  50px;position: relative; text-align: center;}
+.AdvHtmlEditorStyleEditor .styleStatePropClassBody>div>div>.textShort{ font-size:30px; padding: 5px}
+.AdvHtmlEditorStyleEditor .styleStatePropClassBody>div>div>.textLong{ font-size:10px; padding: 5px}
+.AdvHtmlEditorStyleEditor .styleStatePropClassBody>div>div>.subBlock{background: #fff;width: 25px; height:  25px;}
+.AdvHtmlEditorStyleEditor .styleStatePropClassBody>div>div>.subBlock{background: #fff;width: 25px; height:  25px;}
+.AdvHtmlEditorStyleEditor .styleStatePropClass.selected{ border:2px solid #0000ff}
+.AdvHtmlEditorStyleEditor { overflow: auto; max-height: 200px}

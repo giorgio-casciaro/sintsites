@@ -1,0 +1,19 @@
+{
+  "name": "civil-microservices-users",
+  "version": "0.0.1",
+  "description": "",
+  "main": "start.js",
+  "scripts": {
+    "start": "node ./service/start.js",
+    "test": "node ./service/tests/base.launcher.js",
+    "watch_test": "node ./node_modules/sint-bit-utils/utils/watch.js ./service/methods.js,./service/config.js,./service/service.js,./service/tests/base.test.js ./service/tests/base.launcher.js clear",
+    "watch_start": "node ./node_modules/sint-bit-utils/utils/watch.js ./service/methods.js,./service/config.js,./service/service.js,./service/tests/base.test.js ./service/start.js clear"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {
+    "request": "^2.81.0",
+    "request-promise-native": "^1.0.4"
+  }
+}

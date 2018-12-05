@@ -1,0 +1,115 @@
+version: '3.3'
+
+services:
+   www:
+     image: giorgiocasciaro/civil-microservices-www:21
+     entrypoint: sh -c "echo "$$NGINX_CONF" > /etc/nginx/nginx.conf ;  nginx -g 'daemon off;' "
+     environment:
+       NGINX_CONF: |-
+          events {
+              worker_connections  1024;
+          }
+          http {
+            client_max_body_size 500M;
+            include       /etc/nginx/mime.types;
+            default_type  application/octet-stream;
+            resolver 127.0.0.11;
+
+          	gzip on;
+          	gzip_disable "msie6";
+          	gzip_vary on;
+          	gzip_proxied any;
+          	gzip_comp_level 6;
+          	gzip_buffers 16 8k;
+          	gzip_http_version 1.1;
+          	gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+            server {
+
+                set $$cors '';
+                if ($$http_origin ~ '^https?://(127.0.0.1|localhost|localhost:8080|www\.yourdomain\.com|www\.yourotherdomain\.com)') {
+                        set $$cors 'true';
+                }
+
+                listen 443;
+                ssl on;
+                ssl_certificate /microservice/certs/cacert.pem;
+                ssl_certificate_key /microservice/certs/privkey.pem;
+
+                proxy_set_header Host $$http_host;
+                proxy_set_header X-Real-IP $$remote_addr;
+                proxy_set_header X-Forwarded-For $$proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $$scheme;
+
+                add_header 'Access-Control-Allow-Origin' "$http_origin" always;
+                add_header 'Access-Control-Allow-Credentials' 'true' always;
+                add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
+                add_header 'Access-Control-Allow-Headers' 'Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Requested-With' always;
+
+                location ~ /api/([-_a-zA-z0-9]*)/(.*) {
+                  proxy_pass http://$$1:80/$$2 ;
+                }
+
+                location ~ /liveevents/(.*) {
+                  gzip off;
+                  proxy_set_header Connection '';
+                  proxy_http_version 1.1;
+                  chunked_transfer_encoding off;
+                  proxy_buffering off;
+                  proxy_cache off;
+                  proxy_connect_timeout       600;
+                  proxy_send_timeout          600;
+                  proxy_read_timeout          600;
+                  proxy_pass http://liveevents:80/$$1 ;
+                }
+                location ~ /mapserver/(.*) {
+                  proxy_pass http://mapserver:80/$$1 ;
+                }
+                location ~ /styles/(.*) {
+                  proxy_pass http://mapserver:80/styles/$$1 ;
+                }
+                location ~ /data/(.*) {
+                  proxy_pass http://mapserver:80/data/$$1 ;
+                }
+                location ~ /mapbox(.*) {
+                  proxy_pass http://mapserver:80/mapbox$$1 ;
+                }
+                location /tileserver-gl-styles {
+                  if ($$cors = 'true') {
+                    add_header 'Access-Control-Allow-Origin' "$$http_origin" always;
+                  }
+                  root /microservice/service ;
+                }
+                location / {
+                    root /microservice/service;
+                }
+            }
+
+          }
+     volumes:
+        - ../../www:/microservice
+     networks:
+       - microservices_net
+     ports:
+      - 81:81
+      - 82:82
+      - 83:83
+      - 443:443
+     deploy:
+        mode:              global
+        resources:
+          limits:
+            cpus:          '0.50'
+            memory:        100M
+          reservations:
+            cpus:          '0.20'
+            memory:        50M
+
+
+networks:
+  microservices_net:
+    driver:               overlay
+    ipam:
+      driver:             default
+      config:
+        - subnet:         10.100.0.0/24

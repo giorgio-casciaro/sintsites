@@ -1,0 +1,31 @@
+{
+  "name": "civil-microservices-users",
+  "version": "0.0.1",
+  "description": "",
+  "main": "start.js",
+  "scripts": {
+    "start": "node ./service/start.js",
+    "test": "node ./service/tests/base.launcher.js",
+    "watch_test": "node ./node_modules/sint-bit-utils/utils/watch.js ./service/methods.js,./service/config.js,./service/service.js,./service/tests/base.test.js ./service/tests/base.launcher.js clear",
+    "watch_start": "node ./node_modules/sint-bit-utils/utils/watch.js ./service/methods.js,./service/config.js,./service/service.js,./service/tests/base.test.js ./service/start.js clear"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {
+    "bcrypt": "^2.0.0",
+    "couchbase": "^2.4.3",
+    "eventsource": "^1.0.5",
+    "jsonwebtoken": "^7.4.0",
+    "mv": "^2.1.1",
+    "nodemailer": "^4.0.1",
+    "object-hash": "^1.3.0",
+    "request": "^2.81.0",
+    "request-promise-native": "^1.0.4",
+    "rfc6902": "^2.4.0",
+    "sint-bit-cqrs": "",
+    "sint-bit-jesus": "",
+    "sint-bit-utils": "",
+    "uuid": "^3.0.1"
+  }
+}

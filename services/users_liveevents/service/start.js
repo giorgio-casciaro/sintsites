@@ -1,0 +1,2 @@
+// SERVICES DEPENDECIES
+require('./service')()

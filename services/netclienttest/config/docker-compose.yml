@@ -1,0 +1,143 @@
+version:                  '3.3'
+
+services:
+   netclienttest:
+     image:               giorgiocasciaro/ubuntu-node-10:0.0.1
+    #  logging:
+    #    driver:          none
+     working_dir:         /microservice
+     command:             sh -c "npm run watch_test"
+     environment:
+       serviceName:       netclienttest
+       netHost:           netclienttest
+       # debugJesus:      1
+       debugCouchbase:    1
+       debugSchema:       1
+       debugMain:         1
+       uploadPath:        /uploads/
+       couchbaseHosts:    couchbase://51.15.224.160
+       couchbaseUser:     Administrator
+       couchbasePassword: Vopakz_331
+       netCors:           http://localhost:82,http://127.0.0.1:82,http://localhost:8080,http://127.0.0.1:8080,http://localhost:10080,http://127.0.0.1:10080
+       NODE_ENV:          development
+       sendEmails:        'true'
+       smtpConfigJson: '{ "host": "fakesmtp", "from": "info@civilconnect.it", "port": 1025, "secure": false }'
+
+     volumes:
+       - ../../netclienttest:/microservice
+       - ../../../NPM/jesus:/microservice/node_modules/sint-bit-jesus
+       - ../../../NPM/cqrs:/microservice/node_modules/sint-bit-cqrs
+       - ../../../NPM/sint-bit-utils:/microservice/node_modules/sint-bit-utils
+     networks:
+       - microservices_net
+     deploy:
+       resources:
+        limits:
+          cpus:           '0.50'
+          memory:         100M
+        reservations:
+          cpus:           '0.10'
+          memory:         50M
+
+   netclientworkers1:
+     image:               giorgiocasciaro/ubuntu-node-10:0.0.1
+    #  logging:
+    #    driver:          none
+     working_dir:         /microservice
+     command:             sh -c "npm run watch_start"
+     environment:
+       serviceName:       netclientworkers1
+       netHost:           netclientworkers1
+       # debugJesus:      1
+       debugCouchbase:    1
+       debugSchema:       1
+       debugMain:         1
+       uploadPath:        /uploads/
+       couchbaseHosts:    couchbase://51.15.224.160
+       couchbaseUser:     Administrator
+       couchbasePassword: Vopakz_331
+       netCors:           http://localhost:82,http://127.0.0.1:82,http://localhost:8080,http://127.0.0.1:8080,http://localhost:10080,http://127.0.0.1:10080
+       NODE_ENV:          development
+       sendEmails:        'true'
+       smtpConfigJson: '{ "host": "fakesmtp", "from": "info@civilconnect.it", "port": 1025, "secure": false }'
+     volumes:
+       - ../../netclienttest:/microservice
+       - ../../../NPM/jesus:/microservice/node_modules/sint-bit-jesus
+       - ../../../NPM/cqrs:/microservice/node_modules/sint-bit-cqrs
+       - ../../../NPM/sint-bit-utils:/microservice/node_modules/sint-bit-utils
+     networks:
+       - microservices_net
+     # ports:
+     #  - target:         9229
+     #    published:      9229
+     #    protocol:       tcp
+     #    mode:           host
+     deploy:
+       resources:
+        limits:
+          cpus:           '0.50'
+          memory:         100M
+        reservations:
+          cpus:           '0.10'
+          memory:         50M
+       # endpoint_mode:   dnsrr
+         # placement:
+         #   constraints: [node.role == manager]
+        #  mode:          global
+       replicas:          3
+
+   netclientworkers2:
+     image:               giorgiocasciaro/ubuntu-node-10:0.0.1
+    #  logging:
+    #    driver:          none
+     working_dir:         /microservice
+     command:             sh -c "npm run watch_start"
+     environment:
+       serviceName:       netclientworkers2
+       netHost:           netclientworkers2
+       # debugJesus:      1
+       debugCouchbase:    1
+       debugSchema:       1
+       debugMain:         1
+       uploadPath:        /uploads/
+       couchbaseHosts:    couchbase://51.15.224.160
+       couchbaseUser:     Administrator
+       couchbasePassword: Vopakz_331
+       netCors:           http://localhost:82,http://127.0.0.1:82,http://localhost:8080,http://127.0.0.1:8080,http://localhost:10080,http://127.0.0.1:10080
+       NODE_ENV:          development
+       sendEmails:        'true'
+       smtpConfigJson: '{ "host": "fakesmtp", "from": "info@civilconnect.it", "port": 1025, "secure": false }'
+
+     volumes:
+       - ../../netclienttest:/microservice
+       - ../../../NPM/jesus:/microservice/node_modules/sint-bit-jesus
+       - ../../../NPM/cqrs:/microservice/node_modules/sint-bit-cqrs
+       - ../../../NPM/sint-bit-utils:/microservice/node_modules/sint-bit-utils
+     networks:
+       - microservices_net
+     # ports:
+     #  - target:         9229
+     #    published:      9230
+     #    protocol:       tcp
+     #    mode:           host
+     deploy:
+       resources:
+        limits:
+          cpus:           '0.50'
+          memory:         100M
+        reservations:
+          cpus:           '0.10'
+          memory:         50M
+       # endpoint_mode:   dnsrr
+       # placement:
+       #   constraints:   [node.role == manager]
+      #  mode:            global
+       replicas:          3
+
+networks:
+  microservices_net:
+    driver:               overlay
+    ipam:
+      driver:             default
+      config:
+        - subnet:         10.100.0.0/24

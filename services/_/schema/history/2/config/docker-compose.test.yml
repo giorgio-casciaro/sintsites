@@ -1,0 +1,30 @@
+version:              '3.3'
+
+services:
+  schema:
+    image:            giorgiocasciaro/civil-microservices-schema:2
+    command:          -c "npm run start"
+    environment:
+      netHost:        schema
+      netHostPort:    10000
+      aerospikeHosts: aerospike:3000
+      NODE_ENV:       test
+    depends_on:
+      - aerospike
+    ports:
+      - 10000:10000
+    networks:
+      - microservicesNet
+      - aerospike
+    deploy:
+     # placement:
+     #   constraints: [node.role == manager]
+    #  mode: global
+     replicas: 1
+
+
+networks:
+  microservicesNet:
+    driver: overlay
+  aerospike:
+    driver: overlay

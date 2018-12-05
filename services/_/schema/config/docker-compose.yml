@@ -1,0 +1,27 @@
+version:              '3.3'
+
+services:
+  schema:
+    logging:
+       driver:        none
+    image:            giorgiocasciaro/civil-microservices-schema:6
+    command:          sh -c "npm run watch_start"
+    environment:
+      netHost:        schema
+      netHostPort:    10000
+      NODE_ENV:       development
+    volumes:
+       - ../../schema:/microservice
+       - ../../../../civil_microservices_shared_modules/:/microservice/node_modules
+       - ../../../NPM/jesus:/microservice/node_modules/sint-bit-jesus
+       - ../../../NPM/cqrs:/microservice/node_modules/sint-bit-cqrs
+       - ../../../NPM/sint-bit-utils:/microservice/node_modules/sint-bit-utils
+       - ../../../FS/:/uploads/
+    ports:
+      - 10000:10000
+    networks:
+      - microservicesNet
+
+networks:
+  microservicesNet:
+    driver:           bridge

@@ -1,0 +1,29 @@
+version:                 '3.3'
+
+services:
+   fakesmtp:
+    # logging:
+    #   driver:          none
+    image:               giorgiocasciaro/civil-microservices-fakesmtp:6
+    ports:
+     - 9025:8025
+    networks:
+      microservices_net: {}
+    deploy:
+      mode:              replicated
+      replicas:          1
+      resources:
+        limits:
+          cpus:          '0.50'
+          memory:        100M
+        reservations:
+          cpus:          '0.20'
+          memory:        50M
+
+networks:
+  microservices_net:
+    driver:              overlay
+    ipam:
+      driver:            default
+      config:
+        - subnet:        10.100.0.0/24

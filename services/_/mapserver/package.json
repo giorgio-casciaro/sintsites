@@ -1,0 +1,10 @@
+{
+  "name": "civil-microservices-map",
+  "version": "0.0.1",
+  "scripts": {
+    "start":"node ./node_modules/tileserver-gl/src/main.js"
+  },
+  "dependencies": {
+    "tileserver-gl-light": "^2.1.0"
+  }
+}

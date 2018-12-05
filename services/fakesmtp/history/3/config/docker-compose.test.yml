@@ -1,0 +1,21 @@
+version:            '3.3'
+
+services:
+   fakesmtp:
+     image:         giorgiocasciaro/civil-microservices-fakesmtp:3
+     ports:
+       - target:    8025
+         published: 8025
+         protocol:  tcp
+         mode:      host
+     networks:
+       - microservicesNet
+     deploy:
+       endpoint_mode: dnsrr
+       # placement:
+       #   constraints: [node.role == manager]
+      #  mode:      global
+       replicas:    1
+networks:
+  microservicesNet:
+    driver:         overlay

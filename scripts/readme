@@ -1,0 +1,28 @@
+ANSIBLE_HOST_KEY_CHECKING=False
+ansible -i ../test_hosts -u root all -m ping
+ansible -i ../test_hosts -u root all -m setup
+
+ansible-playbook all -i 93.184.216.119, -u root  ./playbook/install_docker.yml
+ansible-playbook -i 212.47.253.160, -u root  ./playbook/install_docker.yml
+
+ansible-playbook -i ../test_hosts -u root  ./playbook/install_docker.yml
+ansible-playbook -i ../test_hosts -u root  ./playbook/init_swarm_manager.yml
+ansible-playbook -i ../test_hosts -u root  ./playbook/init_swarm_worker.yml
+ansible-playbook -i ../test_hosts -u root  ./playbook/set_node_label_on_master.yml
+
+ansible-playbook -i ../test_hosts -u root  ./playbook/deploy_service.yml --extra-vars "swarmfile=/home/giorgio/Scrivania/PROJECTS/civil-microservices/services/aerospike/config/docker-compose.prod.yml"
+
+docker service update --publish-add published=81,target=81,mode=host civil-microservices_www
+
+docker service create --detach=false --name nginx_test --network microservicesNet \
+--publish published=8080,target=80,mode=host \
+--mount type=bind,src=/etc/hostname,dst=/etc/docker-hostname,ro \
+--replicas 1 nbrown/nginxhello
+
+iptables -A INPUT -p tcp -m tcp --dport 7946 -j ACCEPT
+iptables -A INPUT -p udp -m udp --dport 7946 -j ACCEPT
+iptables -A INPUT -p tcp -m tcp --dport 4789 -j ACCEPT
+iptables -A INPUT -p 50 -j ACCEPT
+
+
+docker exec -i -t civil-microservices_www.0dly7wrw96ncmhd7ml1s85q6d /bin/bash

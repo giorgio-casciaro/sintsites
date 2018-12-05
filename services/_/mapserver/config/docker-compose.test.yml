@@ -1,0 +1,65 @@
+version:              '3.3'
+
+services:
+  mapserver:
+    image:            giorgiocasciaro/civil-microservices-map:1
+    entrypoint: bash -c "echo \"$$MS_CONF\" > /config.json ; ls /microservice/data ; /usr/src/app/run.sh -c /config.json --verbose"
+    environment:
+       MS_CONF: |-
+         {
+           "options": {
+             "paths": {
+               "root": "/usr/src/app/node_modules/tileserver-gl-styles",
+               "fonts": "fonts",
+               "styles": "styles",
+               "mbtiles": "/microservice/data"
+             },
+            "domains": [
+              "163.172.140.249"
+            ],
+            "formatQuality": {
+              "jpeg": 80,
+              "webp": 90,
+              "pngQuantization": false,
+              "png": 90
+            },
+            "maxScaleFactor": 3,
+            "maxSize": 2048,
+            "pbfAlias": "pbf",
+            "serveAllFonts": false,
+            "serveStaticMaps": true
+           },
+           "styles": {
+             "klokantech-basic": {
+               "style": "klokantech-basic/style.json",
+               "tilejson": {
+               }
+             },
+             "osm-bright": {
+               "style": "osm-bright/style.json",
+               "tilejson": {
+               }
+             }
+           },
+           "data": {
+             "v3": {
+               "mbtiles": "italy.mbtiles"
+             }
+           }
+         }
+    deploy:
+       endpoint_mode: dnsrr
+       replicas:    1
+       # placement:
+       #   constraints: [node.role == manager]
+       # mode:        global
+    networks:
+      - microservicesNet
+    # ports:
+    #   - target: 80
+    #     published: 10080
+    #     protocol: tcp
+    #     mode: host
+networks:
+  microservicesNet:
+    driver:           overlay

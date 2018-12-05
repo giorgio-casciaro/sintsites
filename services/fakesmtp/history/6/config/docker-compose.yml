@@ -1,0 +1,13 @@
+version:                  '3.3'
+
+services:
+   fakesmtp:
+     image:               giorgiocasciaro/civil-microservices-fakesmtp:6
+     ports:
+       - 8025:8025
+     networks:
+       - microservicesNet
+
+networks:
+  microservicesNet:
+    driver:               bridge

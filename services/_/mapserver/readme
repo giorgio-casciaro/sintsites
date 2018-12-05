@@ -1,0 +1,1 @@
+docker run -v /home/giorgio/Scrivania/PROJECTS/MBTILES_ITALY:/srv -i -t --rm tilemaker /srv/italy-latest.osm.pbf --output=/srv/italy.mbtiles

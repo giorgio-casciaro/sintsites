@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: civil-microservices-www
+  namespace: civil-connect
+spec:
+  template:
+    metadata:
+      labels:
+        app: civil-microservices-www
+    spec:
+      hostNetwork: true
+      containers:
+        - name: users
+          image: 'giorgiocasciaro/civil-microservices-www:version-0'
+          command: ["nginx", "-g", "daemon off;", "-c", "/config/nginx.conf"]
+          envFrom:
+            - configMapRef:
+                name: civil-microservices-www
+          volumeMounts:
+            - name: config
+              mountPath: /config/
+        volumes:
+        - name: config
+          configMap:
+            name: config

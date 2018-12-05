@@ -1,0 +1,54 @@
+APP
+  users
+    register
+    login
+    logout
+  sites
+    list
+    create
+    delete
+  subscriptions
+    create
+    invite
+
+site
+  config
+  styles
+  menus
+  pages
+  page templates
+  page presets
+
+
+METTERE ONLINE
+update sottomoduli npm
+creazione git principale
+settaggi ftp config
+installazione su server (git download, install.sh)
+
+SERVER SIDE RENDERING
+server di rendering nodejs
+prende js da src condiviso con webpack
+capire come accedere ai dati -> meccanismo di astrazione api condiviso front end (implementare anche session e store?)
+
+
+
+
+
+
+basic elements
+  form
+  input with validation
+  list
+  dialog
+
+basic element in test separato
+
+
+FeObjects
+- params
+- grafica
+  - template elements -> elementi che si possono editare es. main , child, image
+    - classes: from framework (in seguito organizzate in preset)
+    - style: css style per questo specifico elemento
+- azioni: array di oggetti con events, azione, params: es. onSubmit, showMessage, {text:"ciao"}

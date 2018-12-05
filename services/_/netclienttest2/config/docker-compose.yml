@@ -1,0 +1,67 @@
+version:               '3.3'
+
+services:
+   netclienttest:
+     image:            giorgiocasciaro/ubuntu-node-10:0.0.1
+    #  logging:
+    #    driver:       none
+     working_dir:      /microservice
+     command:          sh -c "npm run watch_test"
+     environment:
+       serviceName:    netclienttest
+       netHost:        netclienttest
+     volumes:
+       - ../../netclienttest:/microservice
+       - ../../../NPM/jesus:/microservice/node_modules/sint-bit-jesus
+       - ../../../NPM/cqrs:/microservice/node_modules/sint-bit-cqrs
+       - ../../../NPM/sint-bit-utils:/microservice/node_modules/sint-bit-utils
+     networks:
+       - microservicesNet
+
+   netclientworkers1:
+     image:            giorgiocasciaro/ubuntu-node-10:0.0.1
+    #  logging:
+    #    driver:       none
+     working_dir:      /microservice
+     command:          sh -c "npm run watch_start"
+     environment:
+       serviceName:    netclientworkers1
+     volumes:
+       - ../../netclienttest:/microservice
+       - ../../../NPM/jesus:/microservice/node_modules/sint-bit-jesus
+       - ../../../NPM/cqrs:/microservice/node_modules/sint-bit-cqrs
+       - ../../../NPM/sint-bit-utils:/microservice/node_modules/sint-bit-utils
+     networks:
+       - microservicesNet
+     deploy:
+       # endpoint_mode:  dnsrr
+         # placement:
+         #   constraints: [node.role == manager]
+        #  mode:       global
+       replicas:       3
+
+   netclientworkers2:
+     image:            giorgiocasciaro/ubuntu-node-10:0.0.1
+    #  logging:
+    #    driver:       none
+     working_dir:      /microservice
+     command:          sh -c "npm run watch_start"
+     environment:
+       serviceName:    netclientworkers2
+     volumes:
+       - ../../netclienttest:/microservice
+       - ../../../NPM/jesus:/microservice/node_modules/sint-bit-jesus
+       - ../../../NPM/cqrs:/microservice/node_modules/sint-bit-cqrs
+       - ../../../NPM/sint-bit-utils:/microservice/node_modules/sint-bit-utils
+     networks:
+       - microservicesNet
+     deploy:
+       # endpoint_mode:  dnsrr
+       # placement:
+       #   constraints: [node.role == manager]
+      #  mode:         global
+       replicas:       3
+
+networks:
+  microservicesNet:
+    # driver:          overlay

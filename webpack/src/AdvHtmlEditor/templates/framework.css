@@ -1,0 +1,42 @@
+/*importance*/
+.base_importance_primary,.hover_importance_primary:hover{color: #fff; background-color: #007bff;}
+.base_importance_secondary,.hover_importance_secondary:hover{color: #fff; background-color: #6c757d}
+.base_importance_success,.hover_importance_success:hover{color: #fff; background-color:#28a745}
+.base_importance_danger,.hover_importance_danger:hover{color: #fff; background-color: #dc3545}
+.base_importance_warning,.hover_importance_warning:hover{color: #fff; background-color: #ffc107}
+.base_importance_info,.hover_importance_info:hover{color: #fff; background-color: #17a2b8}
+.base_importance_light,.hover_importance_light:hover{color: #212529; background-color: #f8f9fa}
+.base_importance_dark,.hover_importance_dark:hover{color: #fff; background-color: #1d2124}
+
+/*width*/
+.base_width_s,.hover_width_s:hover{width:25%}
+.base_width_m,.hover_width_m:hover{width:50%}
+.base_width_l,.hover_width_l:hover{width:100%}
+
+/*boxAlign*/
+.base_boxAlign_Left,.hover_boxAlign_Left:hover{float:left}
+.base_boxAlign_Right,.hover_boxAlign_Right:hover{float:right}
+
+/*display*/
+.base_display_inline,.hover_display_inline:hover{display: inline}
+.base_display_block,.hover_display_block:hover{display: block}
+.base_display_flex,.hover_display_flex:hover{display: flex}
+
+/*flexJustifyContent*/
+.base_flexJustifyContent_start,.hover_flexJustifyContent_start:hover{justify-content:flex-start}
+.base_flexJustifyContent_end,.hover_flexJustifyContent_end:hover{justify-content:flex-end}
+.base_flexJustifyContent_center,.hover_flexJustifyContent_center:hover{justify-content:center}
+.base_flexJustifyContent_spaceBetween,.hover_flexJustifyContent_spaceBetween:hover{justify-content:space-between}
+.base_flexJustifyContent_spaceAround,.hover_flexJustifyContent_spaceAround:hover{justify-content:space-around}
+.base_flexJustifyContent_spaceEvenly,.hover_flexJustifyContent_spaceEvenly:hover{justify-content:space-evenly}
+
+/*textAlign*/
+.base_textAlign_Left,.hover_textAlign_Left:hover{text-align:left}
+.base_textAlign_Center,.hover_textAlign_Center:hover{text-align:center}
+.base_textAlign_Right,.hover_textAlign_Right:hover{text-align:right}
+.base_textAlign_Justified,.hover_textAlign_Justified:hover{text-align:justify}
+
+/*height*/
+.base_height_s,.hover_height_s:hover{height:25%}
+.base_height_m,.hover_height_m:hover{height:50%}
+.base_height_l,.hover_height_l:hover{height:100%}

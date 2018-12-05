@@ -1,0 +1,69 @@
+version: '3.3'
+
+services:
+   aerospike:
+     image: giorgiocasciaro/civil-microservices-aerospike:2
+     command: bash -c "echo \"$$AEROSPIKE_CONF\" > /etc/aerospike/aerospike.conf ; cat /etc/aerospike/aerospike.conf ; asd --foreground "
+     networks:
+       - aerospike
+     environment:
+       AEROSPIKE_CONF: |-
+          service {
+          		user root
+            	group root
+            	paxos-single-replica-limit 1
+            	pidfile /var/run/aerospike/asd.pid
+            	service-threads 4
+            	transaction-queues 4
+            	transaction-threads-per-queue 4
+            	proto-fd-max 15000
+          }
+
+          logging {
+          	console {
+          		context any info
+          	}
+          }
+
+          network {
+          	service {
+          		address any
+          		port 3000
+          	}
+
+            heartbeat {
+               mode multicast
+               multicast-group 239.0.0.1
+               port 3002
+             }
+
+          	fabric {
+          		port 3001
+          	}
+
+          	info {
+          		port 3003
+          	}
+          }
+
+          namespace civilconnect {
+          	replication-factor 1
+          	memory-size 500M
+          	storage-engine device {
+          		file /opt/aerospike/data/test.dat
+          		filesize 500M
+          	}
+          }
+     build:
+      context: ./
+      dockerfile: Dockerfile
+     deploy:
+      # placement:
+      #   constraints: [node.role == manager]
+      #mode: global
+      replicas: 3
+
+
+networks:
+  aerospike:
+    driver: overlay
